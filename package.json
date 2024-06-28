@@ -1,0 +1,110 @@
+{
+  "name": "pulsar-ide-biome",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "Pulsar integration with Biome, the JS/TS/JSON/CSS formatter and linter",
+  "keywords": [],
+  "repository": "https://github.com/savetheclocktower/pulsar-ide-biome",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@savetheclocktower/atom-languageclient": "^1.17.7",
+    "jsonc-parser": "^3.3.1"
+  },
+  "activationHooks": [
+    "source.js:root-scope-used",
+    "source.ts:root-scope-used",
+    "source.tsx:root-scope-used",
+    "source.json:root-scope-used"
+  ],
+  "enhancedScopes": [
+    "source.js",
+    "source.ts",
+    "source.tsx",
+    "source.json:root-scope-used"
+  ],
+  "consumedServices": {
+    "linter-indie": {
+      "versions": {
+        "2.0.0": "consumeLinterV2"
+      }
+    },
+    "atom-ide-busy-signal": {
+      "versions": {
+        "0.1.0": "consumeBusySignal"
+      }
+    }
+  },
+  "providedServices": {
+    "intentions:list": {
+      "versions": {
+        "1.0.0": "provideIntentionsList"
+      }
+    },
+    "code-actions": {
+      "versions": {
+        "0.1.0": "provideCodeActions"
+      }
+    },
+    "code-format.file": {
+      "versions": {
+        "0.1.0": "provideFileCodeFormat"
+      }
+    },
+    "code-format.range": {
+      "versions": {
+        "0.1.0": "provideRangeCodeFormat"
+      }
+    },
+    "code-highlight": {
+      "versions": {
+        "0.1.0": "provideCodeHighlight"
+      }
+    }
+  },
+  "configSchema": {
+    "formatOnSave": {
+      "order": 1,
+      "title": "Format on save",
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to reformat code when a buffer is saved. Will only reformat if your Biome config file [has formatting enabled](https://biomejs.dev/reference/configuration/#formatterenabled).\n\nThis is a built-in behavior; **do not** need a code formatting package (like `atom-ide-code-format`) to enable this behavior."
+    },
+    "linter": {
+      "type": "object",
+      "order": 2,
+      "title": "Linter",
+      "properties": {
+        "enable": {
+          "title": "Enable",
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to show diagnostic messages via the `linter` package. (To change this setting for a specific kind of file, use a scoped setting.) Requires [linter](https://web.pulsar-edit.dev/packages/linter) and [linter-ui-default](https://web.pulsar-edit.dev/packages/linter-ui-default) (or equivalent packages)."
+        },
+        "includeMessageCodeInMessageBody": {
+          "title": "Include Message Code in Message Body",
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, will include the code for a linter message at the end of its body."
+        }
+      }
+    },
+    "advanced": {
+      "type": "object",
+      "order": 3,
+      "collapsed": true,
+      "title": "Advanced",
+      "properties": {
+        "enable": {
+          "title": "Enable Debug Logging",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to show debug logging in the developer tools console. May be useful when reporting issues."
+        }
+      }
+    }
+  }
+}
